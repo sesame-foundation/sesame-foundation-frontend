@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { providerContract, provider } from "../utils.js";
 import { DonateButton } from "./DonateButton";
+import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 
 export class FactoringChallenge extends React.Component {
   constructor(props) {
@@ -23,6 +24,9 @@ export class FactoringChallenge extends React.Component {
         <p>Withdrawl delay (blocks): {this.state.withdrawlDelay}</p>
         <p>Balance: {this.state.balance}</p>
         <DonateButton onDonate={() => this.updateBalance()} />
+        <SolutionSubmissionButton
+          onSubmitSolution={() => console.log("Submitted solution")}
+        />
       </div>
     );
   }
