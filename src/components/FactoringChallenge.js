@@ -2,6 +2,7 @@ import React from "react";
 import { providerContract, provider } from "../utils.js";
 import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
+import { ethers } from "ethers";
 
 export class FactoringChallenge extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export class FactoringChallenge extends React.Component {
     this.setState({ withdrawlDelay: withdrawlDelay.toString() });
   }
   setBalance(balance) {
-    this.setState({ balance: balance.toString() });
+    this.setState({ balance: ethers.utils.formatEther(balance) });
   }
   render() {
     return (

@@ -37,6 +37,7 @@ export function DonateButton({ onDonate }) {
               placeholder="Amount (eth)"
               aria-label="Amount (eth)"
               aria-describedby="basic-addon1"
+              type="number"
             />
           </InputGroup>
         </Modal.Body>

@@ -87,12 +87,14 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
               placeholder="First factor"
               aria-label="First factor"
               aria-describedby="basic-addon1"
+              type="number"
             />
             <FormControl
               ref={factor2Ref}
               placeholder="Second factor"
               aria-label="Second factor"
               aria-describedby="basic-addon1"
+              type="number"
             />
           </InputGroup>
           {getInfoText(state)}
