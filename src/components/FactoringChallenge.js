@@ -19,14 +19,22 @@ export class FactoringChallenge extends React.Component {
   }
   render() {
     return (
-      <div>
-        <p>Product: {this.state.product}</p>
-        <p>Withdrawl delay (blocks): {this.state.withdrawlDelay}</p>
-        <p>Balance: {this.state.balance}</p>
-        <DonateButton onDonate={() => this.updateBalance()} />
-        <SolutionSubmissionButton
-          onSubmitSolution={() => console.log("Submitted solution")}
-        />
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <p>Product: {this.state.product}</p>
+            <p>Withdrawl delay (blocks): {this.state.withdrawlDelay}</p>
+            <p>Balance: {this.state.balance}</p>
+            <div
+              style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+            >
+              <DonateButton onDonate={() => this.updateBalance()} />
+              <SolutionSubmissionButton
+                onSubmitSolution={() => console.log("Submitted solution")}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
