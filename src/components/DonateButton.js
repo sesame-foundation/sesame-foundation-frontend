@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import { ethers } from "ethers";
 
 export function DonateButton({ onDonate }) {
   const [show, setShow] = useState(false);
@@ -14,7 +15,8 @@ export function DonateButton({ onDonate }) {
   const formControl = useRef(null);
 
   function handleDonation() {
-    signerContract.donate({ value: formControl.current.value }).then(() => {
+    let value = ethers.constants.WeiPerEther.mul(formControl.current.value);
+    signerContract.donate({ value: value }).then(() => {
       onDonate();
       handleClose();
     });

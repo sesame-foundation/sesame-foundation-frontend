@@ -31,7 +31,7 @@ export class FactoringChallenge extends React.Component {
             >
               <DonateButton onDonate={() => this.updateBalance()} />
               <SolutionSubmissionButton
-                onSubmitSolution={() => console.log("Submitted solution")}
+                onSubmitSolution={() => this.updateBalance()}
               />
             </div>
           </div>

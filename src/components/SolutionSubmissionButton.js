@@ -7,11 +7,6 @@ import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
 
 function generateClaim(address, factor1, factor2) {
-  console.log(address);
-  console.log(typeof address);
-  console.log(factor1);
-  console.log(factor2);
-
   let encoded = ethers.utils.defaultAbiCoder.encode(
     ["address", "uint256", "uint256"],
     [address, factor1, factor2]
@@ -19,24 +14,9 @@ function generateClaim(address, factor1, factor2) {
   return ethers.utils.keccak256(encoded);
 }
 
-const STATE_UNSUBMITTED = 0;
-const STATE_SUBMITTED_CLAIM = 1;
-const STATE_WITHDREW_PRIZE = 2;
-
-function getInfoText(state) {
-  switch (state) {
-    case STATE_SUBMITTED_CLAIM:
-      return "Successfully submitted claim";
-      break;
-    case STATE_WITHDREW_PRIZE:
-      return "Successfully withdrew prize";
-      break;
-  }
-}
-
 export function SolutionSubmissionButton({ onSubmitSolution }) {
   const [show, setShow] = useState(false);
-  const [state, setState] = useState(STATE_UNSUBMITTED);
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -55,16 +35,21 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
         if (blockNumber.eq(0)) {
           setIsLoading(true);
           signerContract.submitClaim(claim).then(() => {
-            setState(STATE_SUBMITTED_CLAIM);
+            setMessage("Successfully submitted claim");
             setIsLoading(false);
             onSubmitSolution();
           });
         } else {
-          signerContract.withdraw(factor1, factor2).then(() => {
-            setState(STATE_WITHDREW_PRIZE);
-            setIsLoading(false);
-            onSubmitSolution();
-          });
+          signerContract
+            .withdraw(factor1, factor2)
+            .then(() => {
+              setMessage("Successfully withdrew prize");
+              setIsLoading(false);
+              onSubmitSolution();
+            })
+            .catch((exception) => {
+              setMessage(exception.toString());
+            });
         }
       });
     });
@@ -97,7 +82,7 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
               type="number"
             />
           </InputGroup>
-          {getInfoText(state)}
+          {message}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleSubmission}>
