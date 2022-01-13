@@ -5,13 +5,26 @@ import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
+const bn = require("bn.js");
+
+function encodeInteger(integer) {
+  let value_hex = new bn(integer.toString(), 10).toString("hex");
+  return (
+    "0x" +
+    (value_hex.length % 64 !== 0
+      ? "0".repeat(64 - (value_hex.length % 64))
+      : "") +
+    value_hex
+  );
+}
 
 function generateClaim(address, factor1, factor2) {
+  console.log("Generating claim");
   let encoded = ethers.utils.defaultAbiCoder.encode(
-    ["address", "uint256", "uint256"],
-    [address, factor1, factor2]
+    ["address", "bytes", "bytes"],
+    [address, encodeInteger(factor1), encodeInteger(factor2)]
   );
-  return ethers.utils.keccak256(encoded);
+  return ethers.utils.keccak256(encoded, { encoding: "hex" });
 }
 
 export function SolutionSubmissionButton({ onSubmitSolution }) {
@@ -41,7 +54,7 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
           });
         } else {
           signerContract
-            .withdraw(factor1, factor2)
+            .withdraw(encodeInteger(factor1), encodeInteger(factor2))
             .then(() => {
               setMessage("Successfully withdrew prize");
               setIsLoading(false);

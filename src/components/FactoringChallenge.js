@@ -3,6 +3,7 @@ import { providerContract, provider } from "../utils.js";
 import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 import { ethers } from "ethers";
+const bn = require("bn.js");
 
 export class FactoringChallenge extends React.Component {
   constructor(props) {
@@ -47,7 +48,11 @@ export class FactoringChallenge extends React.Component {
   }
 
   componentDidMount() {
-    providerContract.product().then((product) => this.setProduct(product));
+    providerContract.product().then((product) => {
+
+
+      this.setProduct(new bn(product[0].slice(2), 16).toString(10));
+    });
 
     providerContract
       .withdrawlDelay()
