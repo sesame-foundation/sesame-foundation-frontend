@@ -47,18 +47,28 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
         console.log(blockNumber);
         if (blockNumber.eq(0)) {
           setIsLoading(true);
-          signerContract.submitClaim(claim).then(() => {
-            setMessage("Successfully submitted claim");
-            setIsLoading(false);
-            onSubmitSolution();
-          });
+          signerContract
+            .submitClaim(claim)
+            .then((transactionResponse) => {
+              setMessage("Successfully submitted claim");
+              setIsLoading(false);
+              onSubmitSolution();
+              return transactionResponse.wait();
+            })
+            .then((transactionReceipt) => {
+              console.log(transactionReceipt);
+            });
         } else {
           signerContract
             .withdraw(encodeInteger(factor1), encodeInteger(factor2))
-            .then(() => {
+            .then((transactionResponse) => {
               setMessage("Successfully withdrew prize");
               setIsLoading(false);
               onSubmitSolution();
+              return transactionResponse.wait();
+            })
+            .then((transactionReceipt) => {
+              console.log(transactionReceipt);
             })
             .catch((exception) => {
               setMessage(exception.toString());
