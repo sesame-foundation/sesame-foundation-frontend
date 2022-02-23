@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { signerContract } from "../utils.js";
+import { getSigner, getSignerContract } from "../utils.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -16,9 +16,13 @@ export function DonateButton({ onDonate }) {
 
   function handleDonation() {
     let value = ethers.constants.WeiPerEther.mul(formControl.current.value);
-    signerContract.donate({ value: value }).then(() => {
-      onDonate();
-      handleClose();
+    getSigner().then((signer) => {
+      getSignerContract(signer)
+        .donate({ value: value })
+        .then(() => {
+          onDonate();
+          handleClose();
+        });
     });
   }
 

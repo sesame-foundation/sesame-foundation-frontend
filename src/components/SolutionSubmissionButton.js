@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { signerContract, signer } from "../utils.js";
+import { getSignerContract, getSigner } from "../utils.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -41,39 +41,41 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
   function handleSubmission() {
     let factor1 = factor1Ref.current.value;
     let factor2 = factor2Ref.current.value;
-    signer.getAddress().then((address) => {
-      let claim = generateClaim(address, factor1, factor2);
-      signerContract.claims(claim).then((blockNumber) => {
-        console.log(blockNumber);
-        if (blockNumber.eq(0)) {
-          setIsLoading(true);
-          signerContract
-            .submitClaim(claim)
-            .then((transactionResponse) => {
-              setMessage("Successfully submitted claim");
-              setIsLoading(false);
-              onSubmitSolution();
-              return transactionResponse.wait();
-            })
-            .then((transactionReceipt) => {
-              console.log(transactionReceipt);
-            });
-        } else {
-          signerContract
-            .withdraw(encodeInteger(factor1), encodeInteger(factor2))
-            .then((transactionResponse) => {
-              setMessage("Successfully withdrew prize");
-              setIsLoading(false);
-              onSubmitSolution();
-              return transactionResponse.wait();
-            })
-            .then((transactionReceipt) => {
-              console.log(transactionReceipt);
-            })
-            .catch((exception) => {
-              setMessage(exception.toString());
-            });
-        }
+    getSigner().then((signer) => {
+      signer.getAddress().then((address) => {
+        let claim = generateClaim(address, factor1, factor2);
+        getSignerContract(signer).claims(claim).then((blockNumber) => {
+          console.log(blockNumber);
+          if (blockNumber.eq(0)) {
+            setIsLoading(true);
+            getSignerContract(signer)
+              .submitClaim(claim)
+              .then((transactionResponse) => {
+                setMessage("Successfully submitted claim");
+                setIsLoading(false);
+                onSubmitSolution();
+                return transactionResponse.wait();
+              })
+              .then((transactionReceipt) => {
+                console.log(transactionReceipt);
+              });
+          } else {
+            getSignerContract(signer)
+              .withdraw(encodeInteger(factor1), encodeInteger(factor2))
+              .then((transactionResponse) => {
+                setMessage("Successfully withdrew prize");
+                setIsLoading(false);
+                onSubmitSolution();
+                return transactionResponse.wait();
+              })
+              .then((transactionReceipt) => {
+                console.log(transactionReceipt);
+              })
+              .catch((exception) => {
+                setMessage(exception.toString());
+              });
+          }
+        });
       });
     });
   }
