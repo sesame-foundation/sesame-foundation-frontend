@@ -1,16 +1,15 @@
 import { ethers } from "ethers";
+import networkConfig from "./contracts/network-config.json"
 
-// export const provider = new ethers.providers.JsonRpcProvider();
+const chainId = process.env.REACT_APP_DEFAULT_CHAIN_ID;
+const contractName = "MyContract";
+const contractAddress = networkConfig[chainId][contractName];
+const contractDescription = require(`./contracts/${contractName}.json`);
 
 export const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-const contractDescription = require("./contract.json");
-
-console.log("Contract address");
-console.log(process.env.CONTRACT_ADDRESS);
-
 export const providerContract = new ethers.Contract(
-  "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  contractAddress,
   contractDescription.abi,
   provider
 );
@@ -22,7 +21,7 @@ export async function getSigner() {
 
 export function getSignerContract(signer) {
   return new ethers.Contract(
-    "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    contractAddress,
     contractDescription.abi,
     signer
   );
