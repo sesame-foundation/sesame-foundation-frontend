@@ -27,7 +27,7 @@ function generateClaim(address, factor1, factor2) {
   return ethers.utils.keccak256(encoded, { encoding: "hex" });
 }
 
-export function SolutionSubmissionButton({ onSubmitSolution }) {
+export function SolutionSubmissionButton({ withdrawalDelay, onSubmitSolution }) {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +91,8 @@ export function SolutionSubmissionButton({ onSubmitSolution }) {
           <Modal.Title>Submit solution</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>Withdrawal delay (blocks): {withdrawalDelay}</p>
+
           <InputGroup className="mb-3">
             <FormControl
               ref={factor1Ref}

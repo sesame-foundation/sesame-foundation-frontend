@@ -3,7 +3,12 @@ import { providerContract, provider } from "../utils.js";
 import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 import { ethers } from "ethers";
+import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import "./FactoringChallenge.css";
 const bn = require("bn.js");
 const MAX_DIGITS = 10;
 
@@ -50,35 +55,57 @@ export class FactoringChallenge extends React.Component {
 
   render() {
     return (
-      <div class="container">
-        <div class="row">
-          <div class="col-sm">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              <div>Product: {this.getFormattedProduct()}</div>
-              <Button variant="primary" onClick={() => this.handleCopy()}>
-                Copy
-              </Button>
-            </div>
-            <p>Withdrawl delay (blocks): {this.state.withdrawlDelay}</p>
-            <p>Balance: {this.state.balance}</p>
+      <Container className="factoring-challenge">
+        <Row className="px-4 my-5">
+          <Col>
+            <h1 className="display-5 fw-bold">
+              Decentralized Factoring Challenge
+            </h1>
+            <p className="lead">
+              A decentralized factoring challenge to encourage research in
+              computational number theory.
+            </p>
+            <Badge bg="secondary">
+              Status: Unsolved
+            </Badge>
+          </Col>
+        </Row>
+        <Row>
+          <Col md className="my-5">
+            <h2 className="h4 mb-0">
+              Product
+            </h2>
+
+            <p className="product">
+              {this.getFormattedProduct()}
+            </p>
             <div
               style={{ display: "flex", gap: "10px", justifyContent: "center" }}
             >
-              <DonateButton onDonate={() => this.updateBalance()} />
+              <Button
+                variant="primary"
+                onClick={() => this.handleCopy()}
+                title="Copy to Clipboard"
+              >
+                Copy
+              </Button>
               <SolutionSubmissionButton
+                withdrawalDelay={this.state.withdrawlDelay}
                 onSubmitSolution={() => this.updateBalance()}
               />
             </div>
-          </div>
-        </div>
-      </div>
+          </Col>
+          <Col md className="my-5">
+            <h2 className="h4 mb-0">
+              ETH Prize
+            </h2>
+            <p className="product">
+              {this.state.balance}
+            </p>
+            <DonateButton onDonate={() => this.updateBalance()} />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
