@@ -15,7 +15,7 @@ export function DonateButton({ onDonate }) {
   const formControl = useRef(null);
 
   function handleDonation() {
-    let value = ethers.constants.WeiPerEther.mul(formControl.current.value);
+    let value = ethers.utils.parseEther(formControl.current.value);
     getSigner().then((signer) => {
       getSignerContract(signer)
         .donate({ value: value })
