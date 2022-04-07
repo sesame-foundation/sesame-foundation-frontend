@@ -15,7 +15,7 @@ function About() {
             <p>
               Many people and organizations have used monetary prizes to draw
               attention to unsolved mathematical problems of interest. For
-              example, the Clay Institude has offered $1 million for solutions
+              example, the Clay Institute has offered $1 million for solutions
               to the so-called{" "}
               <a href="http://www.claymath.org/millennium-problems/millennium-prize-problems">
                 Millenium Prize Problems
@@ -57,7 +57,7 @@ function About() {
               In order to address these challenges, past prizes have often
               relied on trusted organizations as facilitators. For example, the
               Beal Prize is sponsored by billionaire mathematician D. Andrew
-              Beal but administered by the American Mathemitcal Society (AMS).
+              Beal but administered by the American Mathematical Society (AMS).
               Such approaches have limitations however: one must persuade a
               trusted organization to take interest in a given problem and
               negotiate the financial and legal details of such an arrangement.
@@ -79,9 +79,9 @@ function About() {
             <p>
               Integer factorization is a problem not only of fundamental
               mathematical interest, but also great practical interest because
-              of it's central role in public-key cryptography. Many current
-              telecommunications system, including much of the internet, rely on
-              public-key encyption whose security comes from the fact that large
+              of its central role in public-key cryptography. Many current
+              telecommunication systems, including much of the internet, rely on
+              public-key encryption whose security comes from the fact that large
               semiprimes are difficult to factor. In order to verify the
               difficulty of this problem, RSA Laboratories launched a{" "}
               <a href="https://en.wikipedia.org/wiki/RSA_Factoring_Challenge">
@@ -135,7 +135,7 @@ function About() {
               important protocols such as public-key cryptography and have major
               implications for communication security, there is significant
               value in exploring the limits of emerging methods for integer
-              factorization. However, because there is essentially no commercial
+              factorization. However, because there are essentially no commercial
               applications for integer factorization, there is limited incentive
               for white-hat researchers to invest significant resources in this
               area.
