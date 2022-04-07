@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -28,8 +28,10 @@ function App() {
         </Navbar>
         <div className="App-body">
           <Routes>
-            <Route path="/" element={<FactoringChallenge />} />
+            <Route path="/" element={<Navigate replace to="/dfc" />} />
+            <Route path="dfc" element={<FactoringChallenge />} />
             <Route path="about" element={<About />} />
+            <Route path='*' element={<Navigate replace to="/" />} />
           </Routes>
         </div>
       </div>
