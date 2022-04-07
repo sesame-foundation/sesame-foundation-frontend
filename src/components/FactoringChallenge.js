@@ -45,7 +45,8 @@ export function FactoringChallenge() {
       .getBalance(providerContract.address)
       .then((balance) => {
         const formattedBalance = ethers.utils.formatEther(balance);
-        setBalance(formattedBalance);
+        const roundedBalance = Math.round(formattedBalance * 1e6) / 1e6;
+        setBalance(roundedBalance);
       });
   };
 
