@@ -14,7 +14,7 @@ function App() {
         <Navbar bg="dark" variant="dark" expand="lg">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand>Sesame Prize</Navbar.Brand>
+              <Navbar.Brand>Sesame Foundation</Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -31,7 +31,7 @@ function App() {
             <Route path="/" element={<Navigate replace to="/dfc" />} />
             <Route path="dfc" element={<FactoringChallenge />} />
             <Route path="about" element={<About />} />
-            <Route path='*' element={<Navigate replace to="/" />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </div>
       </div>
