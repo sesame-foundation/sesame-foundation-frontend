@@ -27,7 +27,10 @@ function generateClaim(address, factor1, factor2) {
   return ethers.utils.keccak256(encoded, { encoding: "hex" });
 }
 
-export function SolutionSubmissionButton({ withdrawalDelay, onSubmitSolution }) {
+export function SolutionSubmissionButton({
+  withdrawalDelay,
+  onSubmitSolution,
+}) {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,38 +47,47 @@ export function SolutionSubmissionButton({ withdrawalDelay, onSubmitSolution }) 
     getSigner().then((signer) => {
       signer.getAddress().then((address) => {
         let claim = generateClaim(address, factor1, factor2);
-        getSignerContract(signer).claims(claim).then((blockNumber) => {
-          console.log(blockNumber);
-          if (blockNumber.eq(0)) {
-            setIsLoading(true);
-            getSignerContract(signer)
-              .submitClaim(claim)
-              .then((transactionResponse) => {
-                setMessage("Successfully submitted claim");
-                setIsLoading(false);
-                onSubmitSolution();
-                return transactionResponse.wait();
-              })
-              .then((transactionReceipt) => {
-                console.log(transactionReceipt);
-              });
-          } else {
-            getSignerContract(signer)
-              .withdraw(encodeInteger(factor1), encodeInteger(factor2))
-              .then((transactionResponse) => {
-                setMessage("Successfully withdrew prize");
-                setIsLoading(false);
-                onSubmitSolution();
-                return transactionResponse.wait();
-              })
-              .then((transactionReceipt) => {
-                console.log(transactionReceipt);
-              })
-              .catch((exception) => {
-                setMessage(exception.toString());
-              });
-          }
-        });
+        getSignerContract(signer)
+          .claims(claim)
+          .then((blockNumber) => {
+            console.log(blockNumber);
+            if (blockNumber.eq(0)) {
+              setIsLoading(true);
+              getSignerContract(signer)
+                .submitClaim(claim)
+                .then((transactionResponse) => {
+                  setMessage(
+                    "Successfully submitted claim. Please wait " +
+                      withdrawalDelay +
+                      " blocks before withdrawing prize."
+                  );
+                  setIsLoading(false);
+                  onSubmitSolution();
+                  return transactionResponse.wait();
+                })
+                .then((transactionReceipt) => {
+                  console.log(transactionReceipt);
+                });
+            } else {
+              getSignerContract(signer)
+                .withdraw(encodeInteger(factor1), encodeInteger(factor2))
+                .then((transactionResponse) => {
+                  setMessage("Successfully withdrew prize");
+                  setIsLoading(false);
+                  onSubmitSolution();
+                  return transactionResponse.wait();
+                })
+                .then((transactionReceipt) => {
+                  console.log(transactionReceipt);
+                })
+                .catch((exception) => {
+                  const error =
+                    "Error: VM Exception while processing transaction: reverted with reason string";
+                  const message = exception.data.message.replace(error, "");
+                  setMessage("Error: " + message);
+                });
+            }
+          });
       });
     });
   }
