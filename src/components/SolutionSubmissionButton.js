@@ -103,8 +103,21 @@ export function SolutionSubmissionButton({
           <Modal.Title>Submit solution</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Withdrawal delay (blocks): {withdrawalDelay}</p>
-
+          <ol>
+            <li>Submit the factors to create a sealed claim.</li>
+            <li>
+              Wait the duration of the withdrawal delay. At least{" "}
+              {withdrawalDelay} blocks must be mined before withdrawal.
+            </li>
+            <li>
+              Re-submit the factors to attempt to withdraw the prize. If the
+              factors are valid, the prize will be transferred to the claimant's
+              wallet.
+            </li>
+          </ol>
+          <p>
+            For more details, visit the <a href="/about">About</a> page.
+          </p>
           <InputGroup className="mb-3">
             <FormControl
               ref={factor1Ref}
