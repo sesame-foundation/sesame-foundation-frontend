@@ -4,6 +4,7 @@ import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 import { SolvedBadge } from "./SolvedBadge";
 import { ethers } from "ethers";
+import DiscordLogo from "./Discord-Logo-White.svg";
 
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -41,28 +42,22 @@ export function FactoringChallenge() {
   };
 
   const updateBalance = () => {
-    provider
-      .getBalance(providerContract.address)
-      .then((balance) => {
-        const formattedBalance = ethers.utils.formatEther(balance);
-        const roundedBalance = Math.round(formattedBalance * 1e6) / 1e6;
-        setBalance(roundedBalance);
-      });
+    provider.getBalance(providerContract.address).then((balance) => {
+      const formattedBalance = ethers.utils.formatEther(balance);
+      const roundedBalance = Math.round(formattedBalance * 1e6) / 1e6;
+      setBalance(roundedBalance);
+    });
   };
 
   const updateProduct = () => {
-    providerContract
-      .product()
-      .then((product) => {
-        const truncatedProduct = new bn(product[0].slice(2), 16).toString(10);
-        setProduct(truncatedProduct.toString());
-      });
+    providerContract.product().then((product) => {
+      const truncatedProduct = new bn(product[0].slice(2), 16).toString(10);
+      setProduct(truncatedProduct.toString());
+    });
   };
 
   const updateWinner = () => {
-    providerContract
-      .winner()
-      .then((winner) => setWinner(winner.toString()));
+    providerContract.winner().then((winner) => setWinner(winner.toString()));
   };
 
   const updateWithdrawlDelay = () => {
@@ -94,19 +89,27 @@ export function FactoringChallenge() {
             A decentralized factoring challenge to encourage research in
             computational number theory.
           </p>
-          <SolvedBadge isUnsolved={isUnsolved} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "32px",
+            }}
+          >
+            <SolvedBadge isUnsolved={isUnsolved} />
+            <a href="https://discord.gg/WWXPmZAsGf">
+              <img src={DiscordLogo} alt="Discord" width="32px" />
+            </a>
+          </div>
         </Col>
       </Row>
       <Row>
         <Col md className="my-5">
-          <h2 className="h4 mb-0">
-            Product
-          </h2>
+          <h2 className="h4 mb-0">Product</h2>
 
-          <p className="product">
-            {getFormattedProduct()}
-          </p>
-          {isUnsolved &&
+          <p className="product">{getFormattedProduct()}</p>
+          {isUnsolved && (
             <div className="product-buttons">
               <Button
                 variant="primary"
@@ -121,18 +124,12 @@ export function FactoringChallenge() {
                 onSubmitSolution={updateSolvedStates}
               />
             </div>
-          }
+          )}
         </Col>
         <Col md className="my-5">
-          <h2 className="h4 mb-0">
-            ETH Prize
-          </h2>
-          <p className="product">
-            {balance}
-          </p>
-          {isUnsolved &&
-            <DonateButton onDonate={updateBalance} />
-          }
+          <h2 className="h4 mb-0">ETH Prize</h2>
+          <p className="product">{balance}</p>
+          {isUnsolved && <DonateButton onDonate={updateBalance} />}
         </Col>
       </Row>
     </Container>
