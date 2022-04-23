@@ -6,6 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Logo from "./logo.png";
 
 function App() {
   return (
@@ -14,7 +15,15 @@ function App() {
         <Navbar bg="dark" variant="dark" expand="lg">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand>Sesame Foundation</Navbar.Brand>
+              <Navbar.Brand>
+                <img
+                  src={Logo}
+                  alt="Sesame Foundation"
+                  width="30px"
+                  className="me-2"
+                />
+                Sesame Foundation
+              </Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
