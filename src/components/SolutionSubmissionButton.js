@@ -44,6 +44,16 @@ export function SolutionSubmissionButton({
   function handleSubmission() {
     let factor1 = factor1Ref.current.value;
     let factor2 = factor2Ref.current.value;
+
+    let positive_integer_regex = /^\d+$/;
+    if (
+      !positive_integer_regex.test(factor1) ||
+      !positive_integer_regex.test(factor2)
+    ) {
+      alert("Factors must be positive integers");
+      return;
+    }
+
     getSigner().then((signer) => {
       signer.getAddress().then((address) => {
         let claim = generateClaim(address, factor1, factor2);
@@ -124,14 +134,14 @@ export function SolutionSubmissionButton({
               placeholder="First factor"
               aria-label="First factor"
               aria-describedby="basic-addon1"
-              type="number"
+              type="text"
             />
             <FormControl
               ref={factor2Ref}
               placeholder="Second factor"
               aria-label="Second factor"
               aria-describedby="basic-addon1"
-              type="number"
+              type="text"
             />
           </InputGroup>
           {message}
