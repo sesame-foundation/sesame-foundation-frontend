@@ -1,6 +1,7 @@
 import "./App.css";
 import { FactoringChallenge } from "./components/FactoringChallenge.js";
 import About from "./components/About.js";
+import Terms from "./components/Terms.js";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
@@ -31,6 +32,9 @@ function App() {
                 <LinkContainer to="/about">
                   <Nav.Link>About</Nav.Link>
                 </LinkContainer>
+                <LinkContainer to="/terms">
+                  <Nav.Link>Terms</Nav.Link>
+                </LinkContainer>
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -40,6 +44,7 @@ function App() {
             <Route path="/" element={<Navigate replace to="/dfc" />} />
             <Route path="dfc" element={<FactoringChallenge />} />
             <Route path="about" element={<About />} />
+            <Route path="terms" element={<Terms />} />
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </div>

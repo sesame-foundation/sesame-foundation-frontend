@@ -1,4 +1,4 @@
-import "./About.css";
+import "./TextDocument.css";
 
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -81,8 +81,8 @@ function About() {
               mathematical interest, but also great practical interest because
               of its central role in public-key cryptography. Many current
               telecommunication systems, including much of the internet, rely on
-              public-key encryption whose security comes from the fact that large
-              semiprimes are difficult to factor. In order to verify the
+              public-key encryption whose security comes from the fact that
+              large semiprimes are difficult to factor. In order to verify the
               difficulty of this problem, RSA Laboratories launched a{" "}
               <a href="https://en.wikipedia.org/wiki/RSA_Factoring_Challenge">
                 factoring challenge
@@ -135,10 +135,10 @@ function About() {
               important protocols such as public-key cryptography and have major
               implications for communication security, there is significant
               value in exploring the limits of emerging methods for integer
-              factorization. However, because there are essentially no commercial
-              applications for integer factorization, there is limited incentive
-              for white-hat researchers to invest significant resources in this
-              area.
+              factorization. However, because there are essentially no
+              commercial applications for integer factorization, there is
+              limited incentive for white-hat researchers to invest significant
+              resources in this area.
             </p>
 
             <h2>Mechanics of the Decentralized Factoring Challenge</h2>
@@ -157,9 +157,9 @@ function About() {
               Users can donate eth to the prize simply by sending eth to the
               contract's address. A user who claims to have found the factors to
               the numbers may submit a sealed claim (the Keccak-256 hash of the
-              purported factors) using the contract's <tt>submitClaim</tt> method.
-              Lastly, a user who has previously submitted a valid sealed claim
-              may withdraw the prize by passing the factors to the{" "}
+              purported factors) using the contract's <tt>submitClaim</tt>{" "}
+              method. Lastly, a user who has previously submitted a valid sealed
+              claim may withdraw the prize by passing the factors to the{" "}
               <tt>withdraw</tt> method.
             </p>
             <p>
