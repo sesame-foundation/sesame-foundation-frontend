@@ -1,11 +1,11 @@
 {
   "1": {
-    "MyContract": "0x17Ba3367362B2A5390da1fc81BC8f9C01c28994E"
+    "FactoringChallenge": "0x17Ba3367362B2A5390da1fc81BC8f9C01c28994E"
   },
   "3": {
-    "MyContract": "0x92ab60b92FC34f15dC9e4aF0D037FF5E0a38A2db"
+    "FactoringChallenge": "0x92ab60b92FC34f15dC9e4aF0D037FF5E0a38A2db"
   },
   "31337": {
-    "MyContract": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+    "FactoringChallenge": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
   }
 }

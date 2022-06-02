@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import networkConfig from "./contracts/network-config.json";
 
 const chainId = process.env.REACT_APP_DEFAULT_CHAIN_ID;
-const contractName = "MyContract";
+const contractName = "FactoringChallenge";
 const contractAddress = networkConfig[chainId][contractName];
 const contractDescription = require(`./contracts/${contractName}.json`);
 

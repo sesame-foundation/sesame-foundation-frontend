@@ -7,6 +7,8 @@ import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
 const bn = require("bn.js");
 
+const DEFAULT_SALT = "0x00";
+
 function encodeInteger(integer) {
   let value_hex = new bn(integer.toString(), 10).toString("hex");
   return (
@@ -19,10 +21,9 @@ function encodeInteger(integer) {
 }
 
 function generateClaim(address, factor1, factor2) {
-  console.log("Generating claim");
   let encoded = ethers.utils.defaultAbiCoder.encode(
-    ["address", "bytes", "bytes"],
-    [address, encodeInteger(factor1), encodeInteger(factor2)]
+    ["address", "bytes", "bytes", "bytes"],
+    [address, encodeInteger(factor1), encodeInteger(factor2), DEFAULT_SALT]
   );
   return ethers.utils.keccak256(encoded, { encoding: "hex" });
 }
@@ -80,7 +81,11 @@ export function SolutionSubmissionButton({
                 });
             } else {
               getSignerContract(signer)
-                .withdraw(encodeInteger(factor1), encodeInteger(factor2))
+                .withdraw(
+                  encodeInteger(factor1),
+                  encodeInteger(factor2),
+                  DEFAULT_SALT
+                )
                 .then((transactionResponse) => {
                   setMessage("Successfully withdrew prize");
                   setIsLoading(false);
@@ -93,7 +98,10 @@ export function SolutionSubmissionButton({
                 .catch((exception) => {
                   const error =
                     "Error: VM Exception while processing transaction: reverted with reason string";
-                  const message = exception.data.message.replace(error, "");
+                  const reason = exception.reason
+                    ? exception.reason
+                    : exception.data.message;
+                  const message = reason.replace(error, "");
                   setMessage("Error: " + message);
                 });
             }
