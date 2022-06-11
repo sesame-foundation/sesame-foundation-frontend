@@ -17,6 +17,7 @@
     "stream": "^0.0.2",
     "web-vitals": "^2.1.2",
     "web3": "^1.6.1",
+    "web3modal": "^1.9.7",
     "webpack": "^4.44.2"
   },
   "scripts": {

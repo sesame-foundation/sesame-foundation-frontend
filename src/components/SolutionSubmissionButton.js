@@ -29,6 +29,8 @@ function generateClaim(address, factor1, factor2) {
 }
 
 export function SolutionSubmissionButton({
+  account,
+  connectWallet,
   withdrawalDelay,
   onSubmitSolution,
 }) {
@@ -155,9 +157,15 @@ export function SolutionSubmissionButton({
           {message}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSubmission}>
-            Submit
-          </Button>
+          {!account ? (
+            <Button variant="primary" onClick={() => connectWallet()}>
+              Connect Wallet
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleSubmission}>
+              Submit
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

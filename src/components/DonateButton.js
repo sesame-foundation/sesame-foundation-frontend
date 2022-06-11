@@ -6,7 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
 
-export function DonateButton({ onDonate }) {
+export function DonateButton({ account, connectWallet, onDonate }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -48,9 +48,15 @@ export function DonateButton({ onDonate }) {
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleDonation}>
-            Donate
-          </Button>
+          {!account ? (
+            <Button variant="primary" onClick={() => connectWallet()}>
+              Connect Wallet
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleDonation}>
+              Donate
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

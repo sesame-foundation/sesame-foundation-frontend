@@ -14,7 +14,7 @@ import "./FactoringChallenge.css";
 const bn = require("bn.js");
 const MAX_DIGITS = 10;
 
-export function FactoringChallenge() {
+export function FactoringChallenge({ account, connectWallet }) {
   const [product, setProduct] = useState(null);
   const [withdrawlDelay, setWithdrawlDelay] = useState(null);
   const [balance, setBalance] = useState(null);
@@ -120,6 +120,8 @@ export function FactoringChallenge() {
               </Button>
 
               <SolutionSubmissionButton
+                account={account}
+                connectWallet={connectWallet}
                 withdrawalDelay={withdrawlDelay}
                 onSubmitSolution={updateSolvedStates}
               />
@@ -129,7 +131,13 @@ export function FactoringChallenge() {
         <Col md className="my-5">
           <h2 className="h4 mb-0">ETH Prize</h2>
           <p className="product">{balance}</p>
-          {isUnsolved && <DonateButton onDonate={updateBalance} />}
+          {isUnsolved && (
+            <DonateButton
+              account={account}
+              connectWallet={connectWallet}
+              onDonate={updateBalance}
+            />
+          )}
         </Col>
       </Row>
     </Container>
