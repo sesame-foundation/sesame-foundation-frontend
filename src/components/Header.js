@@ -30,7 +30,7 @@ export const Header = () => {
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav activeKey={window.location.pathname}>
+          <Nav activeKey={window.location.pathname} className="me-auto">
             <LinkContainer to="/about">
               <Nav.Link>About</Nav.Link>
             </LinkContainer>
@@ -38,12 +38,12 @@ export const Header = () => {
               <Nav.Link>Terms</Nav.Link>
             </LinkContainer>
           </Nav>
+          <ConnectWalletButton>
+            <Button variant="secondary" onClick={() => disconnectWallet()}>
+              {truncateAddress(account)}
+            </Button>
+          </ConnectWalletButton>
         </Navbar.Collapse>
-        <ConnectWalletButton>
-          <Button variant="secondary" onClick={() => disconnectWallet()}>
-            {truncateAddress(account)}
-          </Button>
-        </ConnectWalletButton>
       </Container>
     </Navbar>
   );
