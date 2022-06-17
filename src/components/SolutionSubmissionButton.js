@@ -6,6 +6,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
+import { useWeb3React } from "@web3-react/core";
 
 const bn = require("bn.js");
 
@@ -31,12 +32,14 @@ function generateClaim(address, factor1, factor2) {
 }
 
 export function SolutionSubmissionButton({
+  contractName,
   withdrawalDelay,
   onSubmitSolution,
 }) {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { chainId } = useWeb3React();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -60,54 +63,54 @@ export function SolutionSubmissionButton({
     getSigner().then((signer) => {
       signer.getAddress().then((address) => {
         let claim = generateClaim(address, factor1, factor2);
-        getSignerContract(signer)
-          .claims(claim)
-          .then((blockNumber) => {
-            console.log(blockNumber);
-            if (blockNumber.eq(0)) {
-              setIsLoading(true);
-              getSignerContract(signer)
-                .submitClaim(claim)
-                .then((transactionResponse) => {
-                  setMessage(
-                    "Successfully submitted claim. Please wait " +
-                      withdrawalDelay +
-                      " blocks before withdrawing prize."
-                  );
-                  setIsLoading(false);
-                  onSubmitSolution();
-                  return transactionResponse.wait();
-                })
-                .then((transactionReceipt) => {
-                  console.log(transactionReceipt);
-                });
-            } else {
-              getSignerContract(signer)
-                .withdraw(
-                  encodeInteger(factor1),
-                  encodeInteger(factor2),
-                  DEFAULT_SALT
-                )
-                .then((transactionResponse) => {
-                  setMessage("Successfully withdrew prize");
-                  setIsLoading(false);
-                  onSubmitSolution();
-                  return transactionResponse.wait();
-                })
-                .then((transactionReceipt) => {
-                  console.log(transactionReceipt);
-                })
-                .catch((exception) => {
-                  const error =
-                    "Error: VM Exception while processing transaction: reverted with reason string";
-                  const reason = exception.reason
-                    ? exception.reason
-                    : exception.data.message;
-                  const message = reason.replace(error, "");
-                  setMessage("Error: " + message);
-                });
-            }
-          });
+        const signerContract = getSignerContract(chainId, contractName, signer);
+        if (signerContract === undefined) return;
+        signerContract.claims(claim).then((blockNumber) => {
+          console.log(blockNumber);
+          if (blockNumber.eq(0)) {
+            setIsLoading(true);
+            signerContract
+              .submitClaim(claim)
+              .then((transactionResponse) => {
+                setMessage(
+                  "Successfully submitted claim. Please wait " +
+                    withdrawalDelay +
+                    " blocks before withdrawing prize."
+                );
+                setIsLoading(false);
+                onSubmitSolution();
+                return transactionResponse.wait();
+              })
+              .then((transactionReceipt) => {
+                console.log(transactionReceipt);
+              });
+          } else {
+            signerContract
+              .withdraw(
+                encodeInteger(factor1),
+                encodeInteger(factor2),
+                DEFAULT_SALT
+              )
+              .then((transactionResponse) => {
+                setMessage("Successfully withdrew prize");
+                setIsLoading(false);
+                onSubmitSolution();
+                return transactionResponse.wait();
+              })
+              .then((transactionReceipt) => {
+                console.log(transactionReceipt);
+              })
+              .catch((exception) => {
+                const error =
+                  "Error: VM Exception while processing transaction: reverted with reason string";
+                const reason = exception.reason
+                  ? exception.reason
+                  : exception.data.message;
+                const message = reason.replace(error, "");
+                setMessage("Error: " + message);
+              });
+          }
+        });
       });
     });
   }

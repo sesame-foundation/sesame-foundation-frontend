@@ -4,6 +4,7 @@ import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 import { SolvedBadge } from "./SolvedBadge";
 import { ethers } from "ethers";
+import { useWeb3React } from "@web3-react/core";
 import DiscordLogo from "./Discord-Logo-White.svg";
 
 import Button from "react-bootstrap/Button";
@@ -19,7 +20,9 @@ export function FactoringChallenge() {
   const [withdrawlDelay, setWithdrawlDelay] = useState(null);
   const [balance, setBalance] = useState(null);
   const [winner, setWinner] = useState(null);
+  const { chainId } = useWeb3React();
 
+  const contractName = "FactoringChallenge";
   const isUnsolved = winner == null || /^0x0+$/.test(winner);
 
   const copyToClipboard = (content) => {
@@ -42,7 +45,9 @@ export function FactoringChallenge() {
   };
 
   const updateBalance = () => {
-    provider.getBalance(providerContract.address).then((balance) => {
+    const contract = providerContract(chainId, contractName);
+    if (contract === undefined) return;
+    provider.getBalance(contract.address).then((balance) => {
       const formattedBalance = ethers.utils.formatEther(balance);
       const roundedBalance = Math.round(formattedBalance * 1e6) / 1e6;
       setBalance(roundedBalance);
@@ -50,18 +55,24 @@ export function FactoringChallenge() {
   };
 
   const updateProduct = () => {
-    providerContract.product().then((product) => {
+    const contract = providerContract(chainId, contractName);
+    if (contract === undefined) return;
+    contract.product().then((product) => {
       const truncatedProduct = new bn(product[0].slice(2), 16).toString(10);
       setProduct(truncatedProduct.toString());
     });
   };
 
   const updateWinner = () => {
-    providerContract.winner().then((winner) => setWinner(winner.toString()));
+    const contract = providerContract(chainId, contractName);
+    if (contract === undefined) return;
+    contract.winner().then((winner) => setWinner(winner.toString()));
   };
 
   const updateWithdrawlDelay = () => {
-    providerContract
+    const contract = providerContract(chainId, contractName);
+    if (contract === undefined) return;
+    contract
       .withdrawlDelay()
       .then((withdrawlDelay) => setWithdrawlDelay(withdrawlDelay.toString()));
   };
@@ -120,6 +131,7 @@ export function FactoringChallenge() {
               </Button>
 
               <SolutionSubmissionButton
+                contractName={contractName}
                 withdrawalDelay={withdrawlDelay}
                 onSubmitSolution={updateSolvedStates}
               />
@@ -129,7 +141,12 @@ export function FactoringChallenge() {
         <Col md className="my-5">
           <h2 className="h4 mb-0">ETH Prize</h2>
           <p className="product">{balance}</p>
-          {isUnsolved && <DonateButton onDonate={updateBalance} />}
+          {isUnsolved && (
+            <DonateButton
+              contractName={contractName}
+              onDonate={updateBalance}
+            />
+          )}
         </Col>
       </Row>
     </Container>

@@ -6,9 +6,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
+import { useWeb3React } from "@web3-react/core";
 
-export function DonateButton({ onDonate }) {
+export function DonateButton({ contractName, onDonate }) {
   const [show, setShow] = useState(false);
+  const { chainId } = useWeb3React();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,12 +20,12 @@ export function DonateButton({ onDonate }) {
   function handleDonation() {
     let value = ethers.utils.parseEther(formControl.current.value);
     getSigner().then((signer) => {
-      getSignerContract(signer)
-        .donate({ value: value })
-        .then(() => {
-          onDonate();
-          handleClose();
-        });
+      const signerContract = getSignerContract(chainId, contractName, signer);
+      if (signerContract === undefined) return;
+      signerContract.donate({ value: value }).then(() => {
+        onDonate();
+        handleClose();
+      });
     });
   }
 

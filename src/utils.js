@@ -2,11 +2,6 @@ import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import networkConfig from "./contracts/network-config.json";
 
-const chainId = process.env.REACT_APP_DEFAULT_CHAIN_ID;
-const contractName = "FactoringChallenge";
-const contractAddress = networkConfig[chainId][contractName];
-const contractDescription = require(`./contracts/${contractName}.json`);
-
 export const supportedChainIds = [
   parseInt(process.env.REACT_APP_DEFAULT_CHAIN_ID),
 ];
@@ -16,18 +11,26 @@ export const provider = window.ethereum
   ? new ethers.providers.Web3Provider(window.ethereum, "any")
   : ethers.getDefaultProvider();
 
-export const providerContract = new ethers.Contract(
-  contractAddress,
-  contractDescription.abi,
-  provider
-);
+export const providerContract = (chainId, contractName) => {
+  if (chainId === undefined || !supportedChainIds.includes(chainId)) return;
+  const contractAddress = networkConfig[chainId][contractName];
+  const contractDescription = require(`./contracts/${contractName}.json`);
+  return new ethers.Contract(
+    contractAddress,
+    contractDescription.abi,
+    provider
+  );
+};
 
 export async function getSigner() {
   await provider.send("eth_requestAccounts", []);
   return provider.getSigner();
 }
 
-export function getSignerContract(signer) {
+export function getSignerContract(chainId, contractName, signer) {
+  if (chainId === undefined || !supportedChainIds.includes(chainId)) return;
+  const contractAddress = networkConfig[chainId][contractName];
+  const contractDescription = require(`./contracts/${contractName}.json`);
   return new ethers.Contract(contractAddress, contractDescription.abi, signer);
 }
 
