@@ -44,6 +44,17 @@ function App() {
   };
 
   useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", () => {
+        window.location.reload();
+      });
+      window.ethereum.on("accountsChanged", () => {
+        window.location.reload();
+      });
+    }
+  });
+
+  useEffect(() => {
     if (isConnected != null) {
       injected
         .isAuthorized()

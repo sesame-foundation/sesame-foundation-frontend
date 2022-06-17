@@ -19,7 +19,9 @@ export const ConnectWalletButton = ({ children }) => {
           </Button>
         )
       ) : (
-        <Button variant="danger">Wrong Network</Button>
+        <Button variant="danger" disabled>
+          Wrong Network
+        </Button>
       )}
     </div>
   );
