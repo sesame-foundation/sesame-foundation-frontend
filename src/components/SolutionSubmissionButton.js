@@ -1,12 +1,11 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { getSignerContract, getSigner } from "../utils.js";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
-import { useWeb3React } from "@web3-react/core";
-import { WalletContext } from "../contexts/WalletContext";
 
 const bn = require("bn.js");
 
@@ -38,8 +37,6 @@ export function SolutionSubmissionButton({
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { account } = useWeb3React();
-  const { connectWallet } = useContext(WalletContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -160,15 +157,11 @@ export function SolutionSubmissionButton({
           {message}
         </Modal.Body>
         <Modal.Footer>
-          {!account ? (
-            <Button variant="primary" onClick={() => connectWallet()}>
-              Connect Wallet
-            </Button>
-          ) : (
+          <ConnectWalletButton>
             <Button variant="primary" onClick={handleSubmission}>
               Submit
             </Button>
-          )}
+          </ConnectWalletButton>
         </Modal.Footer>
       </Modal>
     </>

@@ -7,9 +7,8 @@ const contractName = "FactoringChallenge";
 const contractAddress = networkConfig[chainId][contractName];
 const contractDescription = require(`./contracts/${contractName}.json`);
 
-export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 1337, 31337],
-});
+export const supportedChainIds = [1, 3, 1337, 31337];
+export const injected = new InjectedConnector();
 
 export const provider = window.ethereum
   ? new ethers.providers.Web3Provider(window.ethereum)
