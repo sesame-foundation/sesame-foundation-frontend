@@ -3,94 +3,63 @@ import { FactoringChallenge } from "./components/FactoringChallenge.js";
 import { Header } from "./components/Header.js";
 import About from "./components/About.js";
 import Terms from "./components/Terms.js";
-import Web3Modal, { providers } from "web3modal";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { ethers } from "ethers";
-import { useState, useEffect, useCallback } from "react";
+import { injected } from "./utils.js";
+import { useEffect } from "react";
+import {
+  UserRejectedRequestError,
+  NoEthereumProviderError,
+} from "@web3-react/injected-connector";
+import { useWeb3React } from "@web3-react/core";
 import { WalletContext } from "./contexts/WalletContext";
 
-let providerOptions = {};
-if (!window.ethereum) {
-  providerOptions["custom-metamask"] = {
-    display: {
-      logo: providers.METAMASK.logo,
-      name: "Install MetaMask",
-      description: "Connect using browser wallet",
-    },
-    package: {},
-    connector: async () => {
-      window.open("https://metamask.io");
-      throw new Error("MetaMask not installed");
-    },
-  };
-}
-
-const web3Modal = new Web3Modal({
-  cacheProvider: true,
-  providerOptions,
-});
-
 function App() {
-  const [provider, setProvider] = useState();
-  const [account, setAccount] = useState();
-  const [chainId, setChainId] = useState();
+  const { active, activate, deactivate, error, setError } = useWeb3React();
+  const connectedStorageKey = "connected";
+  var isConnected = localStorage.getItem(connectedStorageKey);
 
   const connectWallet = async () => {
-    try {
-      const provider = await web3Modal.connect();
-      const library = new ethers.providers.Web3Provider(provider);
-      const accounts = await library.listAccounts();
-      const network = await library.getNetwork();
-      setProvider(provider);
-      if (accounts) setAccount(accounts[0]);
-      setChainId(network.chainId);
-    } catch (error) {
-      console.log(error);
-    }
+    await activate(
+      injected,
+      (error) => {
+        if (error instanceof NoEthereumProviderError) {
+          console.log("Metamask not installed");
+          window.open("https://metamask.io", "_blank");
+        } else if (error instanceof UserRejectedRequestError) {
+          console.log("User rejected");
+        } else {
+          console.log(error);
+          setError(error);
+        }
+      },
+      false
+    );
+
+    isConnected = localStorage.setItem(connectedStorageKey, true);
   };
 
-  const disconnectWallet = useCallback(async () => {
-    await web3Modal.clearCachedProvider();
-    setAccount();
-    setChainId();
-  }, []);
+  const disconnectWallet = () => {
+    deactivate();
+    localStorage.removeItem(connectedStorageKey);
+  };
 
   useEffect(() => {
-    if (web3Modal && web3Modal.cachedProvider) {
-      connectWallet();
+    if (isConnected != null) {
+      injected
+        .isAuthorized()
+        .then((isAuthorized) => {
+          if (isAuthorized && !active && !error) {
+            activate(injected);
+          }
+        })
+        .catch(() => {});
     }
-  });
-
-  useEffect(() => {
-    if (provider?.on) {
-      const handleAccountsChanged = (accounts) => {
-        if (accounts) setAccount(accounts[0]);
-      };
-
-      const handleChainChanged = (_hexChainId) => {
-        setChainId(_hexChainId);
-      };
-
-      provider.on("accountsChanged", handleAccountsChanged);
-      provider.on("chainChanged", handleChainChanged);
-      provider.on("disconnect", disconnectWallet);
-
-      return () => {
-        if (provider.removeListener) {
-          provider.removeListener("accountsChanged", handleAccountsChanged);
-          provider.removeListener("chainChanged", handleChainChanged);
-          provider.removeListener("disconnect", disconnectWallet);
-        }
-      };
-    }
-  }, [provider, disconnectWallet]);
+  }, [active, activate, error, isConnected]);
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <WalletContext.Provider
-          value={{ account, connectWallet, disconnectWallet }}
-        >
+      <WalletContext.Provider value={{ connectWallet, disconnectWallet }}>
+        <div className="App">
           <Header />
           <div className="App-body">
             <Routes>
@@ -101,8 +70,8 @@ function App() {
               <Route path="*" element={<Navigate replace to="/" />} />
             </Routes>
           </div>
-        </WalletContext.Provider>
-      </div>
+        </div>
+      </WalletContext.Provider>
     </BrowserRouter>
   );
 }

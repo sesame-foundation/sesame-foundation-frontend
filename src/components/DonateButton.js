@@ -5,11 +5,13 @@ import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
+import { useWeb3React } from "@web3-react/core";
 import { WalletContext } from "../contexts/WalletContext";
 
 export function DonateButton({ onDonate }) {
-  const { account, connectWallet } = useContext(WalletContext);
   const [show, setShow] = useState(false);
+  const { connectWallet } = useContext(WalletContext);
+  const { account } = useWeb3React();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

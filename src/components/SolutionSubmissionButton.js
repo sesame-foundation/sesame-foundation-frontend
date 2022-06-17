@@ -5,7 +5,9 @@ import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ethers } from "ethers";
+import { useWeb3React } from "@web3-react/core";
 import { WalletContext } from "../contexts/WalletContext";
+
 const bn = require("bn.js");
 
 const DEFAULT_SALT = "0x00";
@@ -33,10 +35,11 @@ export function SolutionSubmissionButton({
   withdrawalDelay,
   onSubmitSolution,
 }) {
-  const { account, connectWallet } = useContext(WalletContext);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { account } = useWeb3React();
+  const { connectWallet } = useContext(WalletContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

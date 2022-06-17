@@ -1,10 +1,15 @@
 import { ethers } from "ethers";
+import { InjectedConnector } from "@web3-react/injected-connector";
 import networkConfig from "./contracts/network-config.json";
 
 const chainId = process.env.REACT_APP_DEFAULT_CHAIN_ID;
 const contractName = "FactoringChallenge";
 const contractAddress = networkConfig[chainId][contractName];
 const contractDescription = require(`./contracts/${contractName}.json`);
+
+export const injected = new InjectedConnector({
+  supportedChainIds: [1, 3, 1337, 31337],
+});
 
 export const provider = window.ethereum
   ? new ethers.providers.Web3Provider(window.ethereum)

@@ -6,11 +6,12 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 import { truncateAddress } from "../utils.js";
+import { useWeb3React } from "@web3-react/core";
 import { WalletContext } from "../contexts/WalletContext";
 
 export const Header = () => {
-  const { account, connectWallet, disconnectWallet } =
-    useContext(WalletContext);
+  const { account, active } = useWeb3React();
+  const { connectWallet, disconnectWallet } = useContext(WalletContext);
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -38,13 +39,13 @@ export const Header = () => {
           </Nav>
         </Navbar.Collapse>
         <div>
-          {!account ? (
-            <Button variant="primary" onClick={() => connectWallet()}>
-              Connect Wallet
-            </Button>
-          ) : (
+          {active ? (
             <Button variant="secondary" onClick={() => disconnectWallet()}>
               {truncateAddress(account)}
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={() => connectWallet()}>
+              Connect Wallet
             </Button>
           )}
         </div>
