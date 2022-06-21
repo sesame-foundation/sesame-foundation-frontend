@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Logo from "../logo.png";
@@ -7,12 +7,19 @@ import Navbar from "react-bootstrap/Navbar";
 import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { LinkContainer } from "react-router-bootstrap";
 import { useWeb3React } from "@web3-react/core";
-import { truncateAddress } from "../utils.js";
+import { prettyAddress } from "../utils.js";
 import { WalletContext } from "../contexts/WalletContext";
 
 export const Header = () => {
+  const [address, setAddress] = useState(null);
   const { account } = useWeb3React();
   const { disconnectWallet } = useContext(WalletContext);
+
+  useEffect(() => {
+    prettyAddress(account).then((address) => {
+      setAddress(address);
+    });
+  });
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -40,7 +47,7 @@ export const Header = () => {
           </Nav>
           <ConnectWalletButton>
             <Button variant="secondary" onClick={() => disconnectWallet()}>
-              {truncateAddress(account)}
+              {address}
             </Button>
           </ConnectWalletButton>
         </Navbar.Collapse>

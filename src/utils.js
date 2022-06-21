@@ -34,7 +34,17 @@ export function getSignerContract(chainId, contractName, signer) {
   return new ethers.Contract(contractAddress, contractDescription.abi, signer);
 }
 
-export const truncateAddress = (address) => {
+export async function prettyAddress(address) {
+  if (!address) return "No Account";
+  try {
+    const ensName = await provider.lookupAddress(address);
+    return ensName ? ensName : truncateAddress(address);
+  } catch (error) {
+    return truncateAddress(address);
+  }
+}
+
+const truncateAddress = (address) => {
   if (!address) return "No Account";
   const match = address.match(
     /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
