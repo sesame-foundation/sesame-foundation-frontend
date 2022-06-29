@@ -4,12 +4,10 @@ import { DonateButton } from "./DonateButton";
 import { SolutionSubmissionButton } from "./SolutionSubmissionButton";
 import { SolvedBadge } from "./SolvedBadge";
 import { ethers } from "ethers";
-import { useWeb3React } from "@web3-react/core";
-import DiscordLogo from "./Discord-Logo-White.svg";
-
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import DiscordLogo from "./Discord-Logo-White.svg";
 import Row from "react-bootstrap/Row";
 import "./FactoringChallenge.css";
 const bn = require("bn.js");
@@ -20,8 +18,6 @@ export function FactoringChallenge() {
   const [withdrawlDelay, setWithdrawlDelay] = useState(null);
   const [balance, setBalance] = useState(null);
   const [winner, setWinner] = useState(null);
-  const { chainId } = useWeb3React();
-
   const contractName = "FactoringChallenge";
   const isUnsolved = winner == null || /^0x0+$/.test(winner);
 
@@ -45,7 +41,7 @@ export function FactoringChallenge() {
   };
 
   const updateBalance = () => {
-    const contract = providerContract(chainId, contractName);
+    const contract = providerContract(contractName);
     if (contract === undefined) return;
     provider.getBalance(contract.address).then((balance) => {
       const formattedBalance = ethers.utils.formatEther(balance);
@@ -55,7 +51,7 @@ export function FactoringChallenge() {
   };
 
   const updateProduct = () => {
-    const contract = providerContract(chainId, contractName);
+    const contract = providerContract(contractName);
     if (contract === undefined) return;
     contract.product().then((product) => {
       const truncatedProduct = new bn(product[0].slice(2), 16).toString(10);
@@ -64,13 +60,13 @@ export function FactoringChallenge() {
   };
 
   const updateWinner = () => {
-    const contract = providerContract(chainId, contractName);
+    const contract = providerContract(contractName);
     if (contract === undefined) return;
     contract.winner().then((winner) => setWinner(winner.toString()));
   };
 
   const updateWithdrawlDelay = () => {
-    const contract = providerContract(chainId, contractName);
+    const contract = providerContract(contractName);
     if (contract === undefined) return;
     contract
       .withdrawlDelay()

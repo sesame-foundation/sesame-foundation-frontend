@@ -2,18 +2,33 @@ import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import networkConfig from "./contracts/network-config.json";
 
-export const supportedChainIds = [
-  parseInt(process.env.REACT_APP_DEFAULT_CHAIN_ID),
-];
+const chainIdToNetworkName = new Map([
+  [1, "mainnet"],
+  [3, "ropsten"],
+  [4, "rinkeby"],
+  [5, "goerli"],
+  [42, "kovan"],
+  [1337, "dev"],
+]);
+export const defaultChainId = parseInt(process.env.REACT_APP_DEFAULT_CHAIN_ID);
+export const defaultNetworkName = chainIdToNetworkName.get(defaultChainId);
+export const supportedChainIds = [defaultChainId];
 export const injected = new InjectedConnector();
 
-export const provider = window.ethereum
-  ? new ethers.providers.Web3Provider(window.ethereum, "any")
-  : ethers.getDefaultProvider();
+// Set provider to chainId network
+export const provider =
+  defaultChainId !== 1337
+    ? ethers.getDefaultProvider(defaultNetworkName)
+    : new ethers.providers.JsonRpcProvider();
 
-export const providerContract = (chainId, contractName) => {
-  if (chainId === undefined || !supportedChainIds.includes(chainId)) return;
-  const contractAddress = networkConfig[chainId][contractName];
+// Allow provider to be dictated by window.ethereum
+// export const provider = window.ethereum
+//   ? new ethers.providers.Web3Provider(window.ethereum)
+//   : ethers.getDefaultProvider();
+
+export const providerContract = (contractName) => {
+  const contractAddress =
+    networkConfig[defaultChainId.toString()][contractName];
   const contractDescription = require(`./contracts/${contractName}.json`);
   return new ethers.Contract(
     contractAddress,
@@ -27,9 +42,9 @@ export async function getSigner() {
   return provider.getSigner();
 }
 
-export function getSignerContract(chainId, contractName, signer) {
-  if (chainId === undefined || !supportedChainIds.includes(chainId)) return;
-  const contractAddress = networkConfig[chainId][contractName];
+export function getSignerContract(contractName, signer) {
+  const contractAddress =
+    networkConfig[defaultChainId.toString()][contractName];
   const contractDescription = require(`./contracts/${contractName}.json`);
   return new ethers.Contract(contractAddress, contractDescription.abi, signer);
 }

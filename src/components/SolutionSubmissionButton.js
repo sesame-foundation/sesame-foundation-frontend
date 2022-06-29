@@ -6,7 +6,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
-import { useWeb3React } from "@web3-react/core";
 
 const bn = require("bn.js");
 
@@ -39,7 +38,6 @@ export function SolutionSubmissionButton({
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { chainId } = useWeb3React();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -63,7 +61,7 @@ export function SolutionSubmissionButton({
     getSigner().then((signer) => {
       signer.getAddress().then((address) => {
         let claim = generateClaim(address, factor1, factor2);
-        const signerContract = getSignerContract(chainId, contractName, signer);
+        const signerContract = getSignerContract(contractName, signer);
         if (signerContract === undefined) return;
         signerContract.claims(claim).then((blockNumber) => {
           console.log(blockNumber);
