@@ -2,29 +2,30 @@ import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import networkConfig from "./contracts/network-config.json";
 
+const devChainId = 1337;
 const chainIdToNetworkName = new Map([
   [1, "mainnet"],
   [3, "ropsten"],
   [4, "rinkeby"],
   [5, "goerli"],
   [42, "kovan"],
-  [1337, "dev"],
+  [devChainId, "dev"],
 ]);
 export const defaultChainId = parseInt(process.env.REACT_APP_DEFAULT_CHAIN_ID);
 export const defaultNetworkName = chainIdToNetworkName.get(defaultChainId);
 export const supportedChainIds = [defaultChainId];
 export const injected = new InjectedConnector();
 
-// Set provider to chainId network
-export const provider =
-  defaultChainId !== 1337
-    ? ethers.getDefaultProvider(defaultNetworkName)
-    : new ethers.providers.JsonRpcProvider();
-
 // Allow provider to be dictated by window.ethereum
-// export const provider = window.ethereum
-//   ? new ethers.providers.Web3Provider(window.ethereum)
-//   : ethers.getDefaultProvider();
+const devProvider = window.ethereum
+  ? new ethers.providers.Web3Provider(window.ethereum)
+  : new ethers.providers.JsonRpcProvider();
+
+// Set provider to chainId network, unless it's a dev env
+export const provider =
+  defaultChainId !== devChainId
+    ? ethers.getDefaultProvider(defaultNetworkName)
+    : devProvider;
 
 export const providerContract = (contractName) => {
   const contractAddress =
