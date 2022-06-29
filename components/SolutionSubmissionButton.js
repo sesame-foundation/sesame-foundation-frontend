@@ -1,12 +1,11 @@
 import React, { useState, useRef } from "react";
-import { getSignerContract, getSigner } from "../utils.js";
+import { getSignerContract, getSigner } from "../utils/utils.js";
 import Button from "react-bootstrap/Button";
+import ConnectWalletButton from "./ConnectWalletButton.js";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
-
 const bn = require("bn.js");
 
 const DEFAULT_SALT = "0x00";
@@ -30,7 +29,7 @@ function generateClaim(address, factor1, factor2) {
   return ethers.utils.keccak256(encoded, { encoding: "hex" });
 }
 
-export function SolutionSubmissionButton({
+export default function SolutionSubmissionButton({
   contractName,
   withdrawalDelay,
   onSubmitSolution,

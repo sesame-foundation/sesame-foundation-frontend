@@ -1,5 +1,5 @@
 {
-  "name": "decentralized-factoring-challenge-frontend",
+  "name": "sesame-foundation-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,21 +11,20 @@
     "@web3-react/injected-connector": "^6.0.7",
     "crypto-browserify": "^3.12.0",
     "ethers": "^5.5.2",
+    "next": "^12.1.4",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.4",
     "react-dom": "^17.0.2",
     "react-router-bootstrap": "^0.26.0",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "^5.0.0",
     "stream": "^0.0.2",
     "web-vitals": "^2.1.2",
     "webpack": "^4.44.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "lint": "next lint"
   },
   "eslintConfig": {
     "extends": [

@@ -1,8 +1,0 @@
-.factoring-challenge .product {
-  font-size: calc(2.375rem + 1.5vw);
-}
-.factoring-challenge .product-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}

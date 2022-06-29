@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { InjectedConnector } from "@web3-react/injected-connector";
-import networkConfig from "./contracts/network-config.json";
+import networkConfig from "../contracts/network-config.json";
 
 const devChainId = 1337;
 const chainIdToNetworkName = new Map([
@@ -11,15 +11,18 @@ const chainIdToNetworkName = new Map([
   [42, "kovan"],
   [devChainId, "dev"],
 ]);
-export const defaultChainId = parseInt(process.env.REACT_APP_DEFAULT_CHAIN_ID);
+export const defaultChainId = parseInt(
+  process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID
+);
 export const defaultNetworkName = chainIdToNetworkName.get(defaultChainId);
 export const supportedChainIds = [defaultChainId];
 export const injected = new InjectedConnector();
 
 // Allow provider to be dictated by window.ethereum
-const devProvider = window.ethereum
-  ? new ethers.providers.Web3Provider(window.ethereum)
-  : new ethers.providers.JsonRpcProvider();
+const devProvider =
+  typeof window !== "undefined" && window.ethereum
+    ? new ethers.providers.Web3Provider(window.ethereum)
+    : new ethers.providers.JsonRpcProvider();
 
 // Set provider to chainId network, unless it's a dev env
 export const provider =
@@ -30,7 +33,7 @@ export const provider =
 export const providerContract = (contractName) => {
   const contractAddress =
     networkConfig[defaultChainId.toString()][contractName];
-  const contractDescription = require(`./contracts/${contractName}.json`);
+  const contractDescription = require(`../contracts/${contractName}.json`);
   return new ethers.Contract(
     contractAddress,
     contractDescription.abi,
@@ -46,7 +49,7 @@ export async function getSigner() {
 export function getSignerContract(contractName, signer) {
   const contractAddress =
     networkConfig[defaultChainId.toString()][contractName];
-  const contractDescription = require(`./contracts/${contractName}.json`);
+  const contractDescription = require(`../contracts/${contractName}.json`);
   return new ethers.Contract(contractAddress, contractDescription.abi, signer);
 }
 

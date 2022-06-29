@@ -1,7 +1,7 @@
 import React from "react";
 import Badge from "react-bootstrap/Badge";
 
-export const SolvedBadge = ({ isUnsolved }) => {
+export default function SolvedBadge({ isUnsolved }) {
   return (
     <>
       {isUnsolved ? (
@@ -11,4 +11,4 @@ export const SolvedBadge = ({ isUnsolved }) => {
       )}
     </>
   );
-};
+}

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import { useWeb3React } from "@web3-react/core";
-import { supportedChainIds } from "../utils.js";
+import { supportedChainIds } from "../utils/utils.js";
 import { WalletContext } from "../contexts/WalletContext";
 
-export const ConnectWalletButton = ({ children }) => {
+export default function ConnectWalletButton({ children }) {
   const { connectWallet } = useContext(WalletContext);
   const { active, chainId } = useWeb3React();
 
@@ -25,4 +25,4 @@ export const ConnectWalletButton = ({ children }) => {
       )}
     </div>
   );
-};
+}

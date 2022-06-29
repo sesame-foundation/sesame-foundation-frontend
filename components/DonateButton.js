@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
-import { getSigner, getSignerContract } from "../utils.js";
+import { getSigner, getSignerContract } from "../utils/utils.js";
 import Button from "react-bootstrap/Button";
+import ConnectWalletButton from "./ConnectWalletButton.js";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import { ConnectWalletButton } from "./ConnectWalletButton.js";
 import { ethers } from "ethers";
 
-export function DonateButton({ contractName, onDonate }) {
+export default function DonateButton({ contractName, onDonate }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
