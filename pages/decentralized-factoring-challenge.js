@@ -4,7 +4,7 @@ import { providerContract, provider } from "../utils/utils";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import DiscordLogo from "../public/Discord-Logo-White.svg";
+import DiscordLogo from "../public/Discord-Logo-Black.svg";
 import DonateButton from "../components/DonateButton";
 import Head from "next/head";
 import Layout from "../components/Layout";
@@ -101,31 +101,31 @@ export default function DecentralizedFactoringChallenge() {
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
       </Head>
+      <Row className="px-4 py-5" style={{ backgroundColor: "#f8fbff" }}>
+        <Col className="text-center">
+          <h1 className="display-5 fw-bold">
+            Decentralized Factoring Challenge
+          </h1>
+          <p className="lead">
+            A decentralized factoring challenge to encourage research in
+            computational number theory.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "32px",
+            }}
+          >
+            <SolvedBadge isUnsolved={isUnsolved} />
+            <a href="https://discord.gg/WWXPmZAsGf">
+              <img src={DiscordLogo.src} alt="Discord" width="32px" />
+            </a>
+          </div>
+        </Col>
+      </Row>
       <Container className="factoring-challenge">
-        <Row className="px-4 my-5">
-          <Col className="text-center">
-            <h1 className="display-5 fw-bold">
-              Decentralized Factoring Challenge
-            </h1>
-            <p className="lead">
-              A decentralized factoring challenge to encourage research in
-              computational number theory.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "32px",
-              }}
-            >
-              <SolvedBadge isUnsolved={isUnsolved} />
-              <a href="https://discord.gg/WWXPmZAsGf">
-                <img src={DiscordLogo.src} alt="Discord" width="32px" />
-              </a>
-            </div>
-          </Col>
-        </Row>
         <Row>
           <Col md className="my-5 text-center">
             <h2 className="h4 mb-0">Product</h2>

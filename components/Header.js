@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import ConnectWalletButton from "./ConnectWalletButton.js";
 import Container from "react-bootstrap/Container";
-import Logo from "../public/logo.png";
+import Logo from "../public/sesame-foundation.png";
 import Link from "next/link";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -25,17 +25,16 @@ export default function Header() {
   });
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar expand="lg">
       <Container>
         <Link href="/" passHref>
           <Navbar.Brand>
             <img
               src={Logo.src}
               alt="Sesame Foundation"
-              width="30px"
+              height="40px"
               className="me-2"
             />
-            Sesame Foundation
           </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
