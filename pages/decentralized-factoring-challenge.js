@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import DiscordLogo from "../public/Discord-Logo-Black.svg";
 import DonateButton from "../components/DonateButton";
+import DonorList from "../components/DonorList";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Row from "react-bootstrap/Row";
@@ -161,6 +162,7 @@ export default function DecentralizedFactoringChallenge() {
           </Col>
         </Row>
       </Container>
+      <DonorList contractName={contractName} />
     </Layout>
   );
 }

@@ -19,10 +19,10 @@ export const supportedChainIds = [defaultChainId];
 export const injected = new InjectedConnector();
 
 // Allow provider to be dictated by window.ethereum
-const devProvider =
+const metamaskProvider =
   typeof window !== "undefined" && window.ethereum
     ? new ethers.providers.Web3Provider(window.ethereum)
-    : new ethers.providers.JsonRpcProvider();
+    : ethers.providers.getDefaultProvider();
 
 // Set provider to chainId network, unless it's a dev env
 export const provider =
@@ -31,22 +31,24 @@ export const provider =
         defaultNetworkName,
         process.env.NEXT_PUBLIC_INFURA_PROJECT_ID
       )
-    : devProvider;
+    : metamaskProvider;
 
 export const providerContract = (contractName) => {
-  const contractAddress =
-    networkConfig[defaultChainId.toString()][contractName];
   const contractDescription = require(`../contracts/${contractName}.json`);
   return new ethers.Contract(
-    contractAddress,
+    contractAddress(contractName),
     contractDescription.abi,
     provider
   );
 };
 
+export const contractAddress = (contractName) => {
+  return networkConfig[defaultChainId.toString()][contractName];
+};
+
 export async function getSigner() {
-  await provider.send("eth_requestAccounts", []);
-  return provider.getSigner();
+  await metamaskProvider.send("eth_requestAccounts", []);
+  return metamaskProvider.getSigner();
 }
 
 export function getSignerContract(contractName, signer) {

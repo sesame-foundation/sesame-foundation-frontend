@@ -38,6 +38,10 @@ a:active {
   color: #000814;
 }
 
+.table-striped > tbody > tr:nth-of-type(2n + 1) > * {
+  --bs-table-accent-bg: #f8fbff;
+}
+
 .about {
   font-size: 18px;
   text-align: justify;
