@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Head from "next/head";
 import Layout from "../components/Layout";
 import Row from "react-bootstrap/Row";
+import Button from "react-bootstrap/Button";
 
 function About() {
   const metaTitle = "About - Sesame Foundation";
@@ -22,6 +23,14 @@ function About() {
                 A decentralized factoring challenge to encourage research in
                 computational number theory.
               </h1>
+              <div style={{marginBottom: "32px"}}>
+              <Button
+                variant="primary"
+                onClick={() => (window.location.href = "Sesame_Challenges.pdf")}
+              >
+                Read the whitepaper
+              </Button>
+              </div>
               <p>
                 Many people and organizations have used monetary prizes to draw
                 attention to unsolved mathematical problems of interest. For
