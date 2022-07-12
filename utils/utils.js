@@ -27,7 +27,10 @@ const devProvider =
 // Set provider to chainId network, unless it's a dev env
 export const provider =
   defaultChainId !== devChainId
-    ? ethers.getDefaultProvider(defaultNetworkName)
+    ? new ethers.providers.InfuraProvider(
+        defaultNetworkName,
+        process.env.NEXT_PUBLIC_INFURA_PROJECT_ID
+      )
     : devProvider;
 
 export const providerContract = (contractName) => {
