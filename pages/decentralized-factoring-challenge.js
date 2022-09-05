@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import DiscordLogo from "../public/Discord-Logo-Black.svg";
+import GitHubLogo from "../public/GitHub-Mark-32px.png";
 import DonateButton from "../components/DonateButton";
 import DonorList from "../components/DonorList";
 import Head from "next/head";
@@ -122,6 +123,9 @@ export default function DecentralizedFactoringChallenge() {
             <SolvedBadge isUnsolved={isUnsolved} />
             <a href="https://discord.gg/WWXPmZAsGf">
               <img src={DiscordLogo.src} alt="Discord" width="32px" />
+            </a>
+            <a href="https://github.com/sesame-foundation/decentralized-factoring-challenge">
+              <img src={GitHubLogo.src} alt="GitHub" width="32px" />
             </a>
           </div>
         </Col>
